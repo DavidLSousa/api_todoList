@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {"node": "18.x"},
   "scripts": {
-    "start": "npx tsx src/server.ts",
-    "dev": "npx tsx watch src/server.ts"
+    "start": "node run dist/server.js",
+    "start-ts": "npx tsx src/server.ts",
+    "dev-ts": "npx tsx watch src/server.ts",
+    "create-js": "npx tsc"
   },
   "keywords": [],
   "author": "",
