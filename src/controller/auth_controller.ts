@@ -17,7 +17,7 @@ export class ControllerAuth {
     httpOnly: true,
     maxAge: 30 * 60 * 10000,
     samiSite: 'none',
-    // secure: true
+    secure: true
   }
 
   async login () {
@@ -89,7 +89,7 @@ export class ControllerAuth {
     const authAdapter = new JWTAdapter()
     const tokenIsValid = await new AuthUser(authAdapter).isAuth(token)
 
-    return this.express.sendResponse(200, { tokenIsValid: Boolean(tokenIsValid) })
+    return this.express.sendResponse(200, { tokenIsValid: true })
   }
 
   async logOut () {

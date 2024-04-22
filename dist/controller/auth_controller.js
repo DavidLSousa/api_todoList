@@ -23,7 +23,7 @@ class ControllerAuth {
             httpOnly: true,
             maxAge: 30 * 60 * 10000,
             samiSite: 'none',
-            // secure: true
+            secure: true
         };
     }
     login() {
@@ -78,7 +78,7 @@ class ControllerAuth {
                 return this.express.sendResponse(422, { tokenIsValid: false });
             const authAdapter = new jwt_adapter_1.JWTAdapter();
             const tokenIsValid = yield new auth_services_1.AuthUser(authAdapter).isAuth(token);
-            return this.express.sendResponse(200, { tokenIsValid: Boolean(tokenIsValid) });
+            return this.express.sendResponse(200, { tokenIsValid: true });
         });
     }
     logOut() {
