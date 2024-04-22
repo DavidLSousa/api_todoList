@@ -74,10 +74,12 @@ class ControllerAuth {
     verifyToken() {
         return __awaiter(this, void 0, void 0, function* () {
             const { token } = this.express.getRequest().cookies;
+            console.log('token: ', token);
             if (!token)
                 return this.express.sendResponse(422, { tokenIsValid: false });
             const authAdapter = new jwt_adapter_1.JWTAdapter();
             const tokenIsValid = yield new auth_services_1.AuthUser(authAdapter).isAuth(token);
+            console.log('tokenIsValid: ', tokenIsValid);
             return this.express.sendResponse(200, { tokenIsValid: true });
         });
     }

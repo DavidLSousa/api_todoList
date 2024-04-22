@@ -83,11 +83,13 @@ export class ControllerAuth {
 
   async verifyToken () {
     const { token } = this.express.getRequest().cookies
+    console.log('token: ', token)
 
     if (!token) return this.express.sendResponse(422, { tokenIsValid: false })
     
     const authAdapter = new JWTAdapter()
     const tokenIsValid = await new AuthUser(authAdapter).isAuth(token)
+    console.log('tokenIsValid: ', tokenIsValid)
 
     return this.express.sendResponse(200, { tokenIsValid: true })
   }
