@@ -79,7 +79,7 @@ export class ControllerAuth {
     user.password = dataPassword
 
     // Add User to database
-    await new ModelAuth(DBAdapterAuth).addUser(user)
+    new ModelAuth(DBAdapterAuth).addUser(user)
 
     // Getting token
     const authAdapter = new JWTAdapter()

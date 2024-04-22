@@ -3,7 +3,7 @@ import { IAuth } from './i_authenticator'
 
 export class JWTAdapter implements IAuth {
   private secret = String(process.env.SECRET)
-  private exp = '1m'
+  private exp = '1d'
 
   sign(email: string): string {
     try {
