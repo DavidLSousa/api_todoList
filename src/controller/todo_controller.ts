@@ -15,9 +15,11 @@ export class ControllerTodo {
   async getAll () {
     try {
       const { token } = this.getAllTokens()
+      console.log('token: ', token)
 
       const authAdapter = new JWTAdapter()
       const tokenIsValid = await new AuthUser(authAdapter).isAuth(token)
+      console.log('tokenIsValid: ', tokenIsValid)
       if (!tokenIsValid) return this.express
         .sendResponse(401, { unauthorized: 'Token não autorizado' })
 

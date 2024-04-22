@@ -23,8 +23,10 @@ class ControllerTodo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { token } = this.getAllTokens();
+                console.log('token: ', token);
                 const authAdapter = new jwt_adapter_1.JWTAdapter();
                 const tokenIsValid = yield new auth_services_1.AuthUser(authAdapter).isAuth(token);
+                console.log('tokenIsValid: ', tokenIsValid);
                 if (!tokenIsValid)
                     return this.express
                         .sendResponse(401, { unauthorized: 'Token não autorizado' });
