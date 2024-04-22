@@ -19,19 +19,15 @@ const scrypt_adapter_1 = require("../modules/encrypter/scrypt_adapter");
 class ControllerAuth {
     constructor(express) {
         this.express = express;
+        this.optionsCookies = {
+            httpOnly: true,
+            maxAge: 30 * 60 * 10000,
+            samiSite: 'none',
+            // secure: true
+        };
     }
     login() {
         return __awaiter(this, void 0, void 0, function* () {
-            // const { token } = this.express.getRequest().cookies
-            // console.log('token cookies: ', token)
-            // if (token) { // Verifica se o token vem no header
-            //   const authAdapter = new JWTAdapter()
-            //   const tokenIsValid = await new AuthUser(authAdapter).isAuth(token)
-            //   if (tokenIsValid) { // Verifica se o token que veio no header ainda é valido
-            //     return this.express.sendResponse(200, { tokenHeader: token })
-            //   }
-            // }
-            // Rever essa logica da validação do token acima
             const user = this.express.getRequest().body;
             const DBAdapterAuth = new mongodb_adapter_auth_1.MongoDBApapterAuth();
             const userDB = yield new auth_model_1.ModelAuth(DBAdapterAuth).findUser(user.email);
@@ -48,12 +44,7 @@ class ControllerAuth {
             const authAdapter = new jwt_adapter_1.JWTAdapter();
             const newToken = yield new auth_services_1.AuthUser(authAdapter).auth(user.email);
             // Send Response
-            this.express.sendResponseWithCookieToken(newToken, {
-                httpOnly: true,
-                maxAge: 30 * 60 * 10000,
-                // samiSite: 'none',
-                // secure: true
-            });
+            this.express.sendResponseWithCookieToken(newToken, this.optionsCookies);
             this.express.sendResponse(200, { userRegistered: Boolean(userDB) });
         });
     }
@@ -63,7 +54,6 @@ class ControllerAuth {
             // Checking if the user exists in the database 
             const DBAdapterAuth = new mongodb_adapter_auth_1.MongoDBApapterAuth();
             const userExists = yield new auth_model_1.ModelAuth(DBAdapterAuth).userAlreadyExists(user);
-            console.log('userExists: ', userExists);
             if (userExists)
                 return this.express
                     .sendResponse(422, { userRegistered: userExists });
@@ -73,16 +63,11 @@ class ControllerAuth {
                 .hashPassword(String(user.password));
             user.password = dataPassword;
             // Add User to database
-            yield new auth_model_1.ModelAuth(DBAdapterAuth).addUser(user);
+            new auth_model_1.ModelAuth(DBAdapterAuth).addUser(user);
             // Getting token
             const authAdapter = new jwt_adapter_1.JWTAdapter();
             const newToken = yield new auth_services_1.AuthUser(authAdapter).auth(user.email);
-            this.express.sendResponseWithCookieToken(newToken, {
-                httpOnly: true,
-                maxAge: 30 * 60 * 10000,
-                // samiSite: 'none',
-                // secure: true
-            });
+            this.express.sendResponseWithCookieToken(newToken, this.optionsCookies);
             this.express.sendResponse(200, { userRegistered: userExists });
         });
     }
@@ -98,7 +83,6 @@ class ControllerAuth {
     }
     logOut() {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('aqui');
             this.express.sendResponseWithCookieToken('tokenInvalido', {
                 httpOnly: true,
                 maxAge: 10000,

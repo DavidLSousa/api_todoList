@@ -13,19 +13,14 @@ export class ControllerAuth {
     private express: IHttpContext
   ) {}
 
+  private optionsCookies = {
+    httpOnly: true,
+    maxAge: 30 * 60 * 10000,
+    samiSite: 'none',
+    // secure: true
+  }
+
   async login () {
-    // const { token } = this.express.getRequest().cookies
-    // console.log('token cookies: ', token)
-
-    // if (token) { // Verifica se o token vem no header
-    //   const authAdapter = new JWTAdapter()
-    //   const tokenIsValid = await new AuthUser(authAdapter).isAuth(token)
-    //   if (tokenIsValid) { // Verifica se o token que veio no header ainda é valido
-    //     return this.express.sendResponse(200, { tokenHeader: token })
-    //   }
-    // }
-    // Rever essa logica da validação do token acima
-
     const user = this.express.getRequest().body
 
     const DBAdapterAuth = new MongoDBApapterAuth()
@@ -50,12 +45,7 @@ export class ControllerAuth {
     // Send Response
     this.express.sendResponseWithCookieToken(
       newToken,
-      {
-        httpOnly: true,
-        maxAge: 30 * 60 * 10000,
-        // samiSite: 'none',
-        // secure: true
-      }
+      this.optionsCookies
     )
     this.express.sendResponse(200, { userRegistered: Boolean(userDB) })
   }
@@ -66,7 +56,6 @@ export class ControllerAuth {
     // Checking if the user exists in the database 
     const DBAdapterAuth = new MongoDBApapterAuth()
     const userExists = await new ModelAuth(DBAdapterAuth).userAlreadyExists(user)
-    console.log('userExists: ', userExists)
 
     if (userExists) return this.express
       .sendResponse(422, { userRegistered: userExists })
@@ -87,12 +76,7 @@ export class ControllerAuth {
 
     this.express.sendResponseWithCookieToken(
       newToken,
-      {
-        httpOnly: true,
-        maxAge: 30 * 60 * 10000,
-        // samiSite: 'none',
-        // secure: true
-      }
+      this.optionsCookies
     )
     this.express.sendResponse(200, { userRegistered: userExists })
   }
@@ -109,8 +93,6 @@ export class ControllerAuth {
   }
 
   async logOut () {
-    console.log('aqui')
-
     this.express.sendResponseWithCookieToken(
       'tokenInvalido',
       {

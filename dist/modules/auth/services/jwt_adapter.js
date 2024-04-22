@@ -8,7 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class JWTAdapter {
     constructor() {
         this.secret = String(process.env.SECRET);
-        this.exp = '1m';
+        this.exp = '1d';
     }
     sign(email) {
         try {
