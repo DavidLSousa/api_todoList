@@ -22,7 +22,7 @@ class ControllerAuth {
         this.optionsCookies = {
             httpOnly: true,
             maxAge: 30 * 60 * 10000,
-            // samiSite: 'none',
+            samiSite: 'none',
             // secure: true
         };
     }
