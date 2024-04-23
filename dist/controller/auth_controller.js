@@ -23,7 +23,7 @@ class ControllerAuth {
             httpOnly: true,
             maxAge: 30 * 60 * 10000,
             samiSite: 'none',
-            // secure: true
+            secure: true
         };
     }
     login() {
