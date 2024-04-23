@@ -85,12 +85,7 @@ class ControllerAuth {
     }
     logOut() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.express.sendResponseWithCookieToken('tokenInvalido', {
-                httpOnly: true,
-                maxAge: 10000,
-                // samiSite: 'none',
-                // secure: true
-            });
+            this.express.sendResponseWithCookieToken('tokenInvalido', this.optionsCookies);
             return this.express.sendResponse(422, { userLogout: true });
         });
     }

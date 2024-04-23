@@ -97,12 +97,7 @@ export class ControllerAuth {
   async logOut () {
     this.express.sendResponseWithCookieToken(
       'tokenInvalido',
-      {
-        httpOnly: true,
-        maxAge: 10000,
-        // samiSite: 'none',
-        // secure: true
-      }
+      this.optionsCookies
     )
     return this.express.sendResponse(422, { userLogout: true })
   }
